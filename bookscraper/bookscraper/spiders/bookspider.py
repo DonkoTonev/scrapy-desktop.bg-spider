@@ -14,15 +14,9 @@ class BookspiderSpider(scrapy.Spider):
 
 
     def parse_computers_page(self, response):
-
         product_titles = response.css('h2[itemprop="name"]::text').getall()
-        # print("Product Titles:", product_titles)
-        
         product_prices = response.css('span.price span[itemprop="price"]::text').getall()
-        # print("Product Prices:", product_prices)
-        
         product_urls = response.css('article[itemtype="http://schema.org/product"] > a::attr(href)').getall()
-        # print("Product URLs:", product_urls)
         
         for title, price, url in zip(product_titles, product_prices, product_urls):
             yield {
