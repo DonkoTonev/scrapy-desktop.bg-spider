@@ -24,6 +24,7 @@ class BookspiderSpider(scrapy.Spider):
                 'price': price.strip(),
                 'url': response.urljoin(url)
             }
+            yield response.follow(url, callback=self.parse_product_page)
     
     def parse_product_page(self, response):
         
