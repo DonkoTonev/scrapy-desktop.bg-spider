@@ -1,7 +1,7 @@
 import scrapy
 
 
-class BookspiderSpider(scrapy.Spider):
+class ComputerSpider(scrapy.Spider):
     name = "desktop"
     allowed_domains = ["desktop.bg"]
     start_urls = ["https://desktop.bg/"]
