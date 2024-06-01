@@ -24,3 +24,18 @@ class BookspiderSpider(scrapy.Spider):
                 'price': price.strip(),
                 'url': response.urljoin(url)
             }
+    
+    def parse_product_page(self, response):
+        
+        processor = response.xpath('//th[contains(text(), "Процесор")]/following-sibling::td//text()').get()
+        gpu = response.xpath('//th[contains(text(), "Видеокарта")]/following-sibling::td//text()').get()
+        motherboard = response.xpath('//th[contains(text(), "Дънна платка")]/following-sibling::td//text()').get()
+        ram_option = response.xpath('//tr[@id="DesktopRam"]/td//div[@class="default-option options"]/label/span/text()').getall()
+        ram = ''.join(ram_option).strip() if ram_option else None
+        
+        yield {
+            'processor': processor.strip() if processor else None,
+            'gpu': gpu.strip() if gpu else None,
+            'motherboard': motherboard.strip() if motherboard else None,
+            'ram': ram if ram_option else None,
+        }
