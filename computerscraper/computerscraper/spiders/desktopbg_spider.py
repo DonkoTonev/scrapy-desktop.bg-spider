@@ -9,13 +9,13 @@ class ComputerSpider(scrapy.Spider):
     start_urls = ["https://desktop.bg/"]
 
     def __init__(self):
-        self.conn = sqlite3.connect('desktop_data.db')
+        self.conn = sqlite3.connect('computers_data.db')
         self.cursor = self.conn.cursor()
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS products
                          (url TEXT PRIMARY KEY, title TEXT, price TEXT, processor TEXT, gpu TEXT, motherboard TEXT, ram TEXT)''')
         self.conn.commit()
 
-    def closed(self, reason):
+    def closed(self):
         self.conn.close()
 
     def parse(self, response):
@@ -38,7 +38,7 @@ class ComputerSpider(scrapy.Spider):
         ram_options = response.xpath('//tr[@id="DesktopRam"]/td//div[@class="default-option options"]/label/span/text()').getall()
 
         # At some of the computer pages, there are options, for example 3 motherboard or processor options
-        # So this way only the default option is crawled
+        # So this way only the default option is crawled, if there are multiple options
         if len(product_motherboard) < 2:
             product_motherboard = response.css('#Motherboard > td > div.default-option.options > label > span:nth-child(1)::text').get()
 
@@ -69,7 +69,7 @@ class ComputerSpider(scrapy.Spider):
                 self.conn.commit()
                 logging.info("Data inserted into SQLite successfully.")
             except sqlite3.Error as e:
-                logging.error(f"Error inserting data into SQLite: {str(e)}")
+                logging.error("Error inserting data into SQLite: %s", str(e))
 
         yield {
             'url': product_url,
