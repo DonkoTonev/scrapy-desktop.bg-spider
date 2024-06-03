@@ -5,12 +5,13 @@ This Scrapy spider, named `desktop`, is designed to crawl the website desktop.bg
 
 ## Installation
 1. Make sure you have Python installed on your system. You can download it from [Python's official website](https://www.python.org/).
-2. Install Scrapy using pip:
-```
-pip install scrapy
-```
 
-3. Clone or download the spider code from this repository.
+2. Clone or download the spider code from this repository.
+
+3. Install the requirements:
+```
+pip install -r requirements.txt
+```
 
 ## Usage
 1. Navigate to the directory containing the spider code.
